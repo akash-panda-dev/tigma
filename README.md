@@ -134,6 +134,73 @@ Designs are saved as `.tigma` files in JSON format. The file stores:
 - **Mouse support**: Full mouse interaction including hover highlighting
 - **Live preview**: See rectangles and lines as you draw them
 
+## Using Tigma Designs in Your TUI App
+
+Tigma can be used as a **visual design tool** for creating TUI layouts that you then import into your applications!
+
+### Quick Start
+
+1. **Design** your TUI layout in Tigma and save it (e.g., `dashboard.tigma`)
+2. **Export** to ASCII or load dynamically in your app
+3. **Use** in any TUI framework (or plain console output)
+
+### Export to ASCII
+
+```bash
+bun tigma-to-ascii.ts dashboard.tigma
+```
+
+This outputs plain ASCII text you can copy-paste into your code:
+
+```typescript
+const HEADER = `
+┌─────────────────────────────┐
+│     Application Title       │
+└─────────────────────────────┘
+`
+console.log(HEADER)
+```
+
+### Load Dynamically
+
+```typescript
+import { TigmaLoader } from "./tigma-loader"
+
+const loader = new TigmaLoader()
+const design = loader.load("./dashboard.tigma")
+const ascii = loader.renderToAscii(design)
+
+console.log(ascii)  // Use in any TUI app!
+```
+
+### Example: Use with @opentui/core
+
+```typescript
+import { TigmaLoader } from "./tigma-loader"
+
+const loader = new TigmaLoader()
+const design = loader.load("./menu.tigma")
+
+// In your render function
+loader.renderToBuffer(design, buffer, 0, 0)
+```
+
+**See [USAGE_GUIDE.md](USAGE_GUIDE.md) for complete documentation** including:
+- Integration with different TUI frameworks (blessed, ink, etc.)
+- Dynamic content with static layouts
+- Example app demonstrating the workflow
+
+### Try the Example
+
+```bash
+# Create a design
+bun run index.ts
+# Save as "example.tigma"
+
+# Run the example app that uses your design
+bun example-app.ts
+```
+
 ## Example Workflow
 
 1. Press `R` to select the Rectangle tool
